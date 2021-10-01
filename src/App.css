@@ -1,38 +1,63 @@
-.App {
-  text-align: center;
+@import-normalize;
+
+body {
+    background-color: #ccc;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.containerFull {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 90vw;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.movie {
+    width: 280px;
+    margin: 2rem 1rem 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.25);
+    border-radius: .5rem;
+    padding: 1.5rem;
+    position: relative;
 }
 
-.App-link {
-  color: #61dafb;
+.movie__title {
+    margin: 0;
+    font-weight: bold;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.crossClose {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.is-flex {
+    display: flex;
+}
+
+.is-ml15 {
+    margin: 0 0 0 15px;
+}
+
+.button {
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.selectCatego {
+    margin: 3rem 0 0;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(0,0,0,.25);
+    border-radius: .5rem;
 }
