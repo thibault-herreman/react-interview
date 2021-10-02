@@ -1,7 +1,7 @@
 @import-normalize;
 
 body {
-    background-color: #ccc;
+    background-color: #ddd;
 }
 
 .containerFull {
@@ -26,6 +26,7 @@ body {
     border-radius: .5rem;
     padding: 1.5rem;
     position: relative;
+    box-shadow: .7rem .7rem rgba(44, 44, 44, 0.25);
 }
 
 .movie__title {
@@ -57,7 +58,8 @@ body {
 
 .selectCatego {
     margin: 3rem 0 0;
-    padding: 0.5rem 1rem;
+    padding: 0.7rem 1rem;
     border: 1px solid rgba(0,0,0,.25);
     border-radius: .5rem;
+    box-shadow: .3rem .3rem rgba(44, 44, 44, 0.10);
 }

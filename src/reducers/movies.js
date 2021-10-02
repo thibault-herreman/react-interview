@@ -17,7 +17,9 @@ export default function(movies = [], action) {
             return movies;    
         }
     } else if(action.type === 'filterCatego') {
-        movies = action.arrayMovies;
+        if (action.counterFilter > 1) {
+            movies = action.arrayMovies;
+        }
         if (action.catego === 'Category') {
             return movies;
         } else {

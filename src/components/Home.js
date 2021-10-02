@@ -9,8 +9,10 @@ import {
 
 function Home({movies, category, ...props}) {
 
-  const [arrayMovies, setArrayMovies] = useState([]);
   const [bool, setBool] = useState(false);
+  const [counterFilter, setCounterFilter] = useState(0);
+  const [moviesCopy, setMoviesCopy] = useState([]);
+  const [stateCatego, setStateCatego] = useState('');
 
   useEffect(() => {
     // chargement du tableau à l'initialisation
@@ -18,7 +20,6 @@ function Home({movies, category, ...props}) {
       const promise = movies$;
       promise.then(moviesLb => {
         props.addMovies(moviesLb);
-        setArrayMovies(moviesLb);
 
         const optionCategory = moviesLb.map((movie) => movie.category);
         const filteredArray = optionCategory.filter((el, pos) => optionCategory.indexOf(el) === pos);
@@ -32,15 +33,25 @@ function Home({movies, category, ...props}) {
     async function loadData() {
       const optionCategory = movies.map((movie) => movie.category);
       const filteredArray = optionCategory.filter((el, pos) => optionCategory.indexOf(el) === pos);
-      // console.log(filteredArray);
       props.addCategory(filteredArray);
     };
     loadData()
   }, [bool]);
 
+  useEffect(() => {
+    async function loadData() {
+      if(counterFilter === 1) {
+        setMoviesCopy(movies);
+      }
+      props.filterCatego(stateCatego, moviesCopy, counterFilter);
+    };
+    loadData()
+  }, [counterFilter]);
+
   const handleClickDelete = (idMovie) => {
     props.deleteMovie(idMovie);
     setBool(!bool);
+    setCounterFilter(0);
   }
 
   const handleClickMoreLike = (idMovie) => {
@@ -52,7 +63,8 @@ function Home({movies, category, ...props}) {
   }
 
   const onChangeSelect = (catego) => {
-    props.filterCatego(catego, arrayMovies)
+    setCounterFilter(counterFilter+1);
+    setStateCatego(catego);
   }
 
   const tabMovies = movies.map((movie) => {
@@ -74,7 +86,7 @@ function Home({movies, category, ...props}) {
   return (
     <div className="containerFull">
       <select name="selectCatego" className="selectCatego" onChange={ (e) => onChangeSelect(e.target.value) }>
-        <option value="Category">Category</option>
+        <option value="Category">Filtrer par catégories</option>
         {displayOptionCategory}
       </select>
       <div className="container">
@@ -105,8 +117,8 @@ function mapDispatchToProps(dispatch) {
     lessLike: function (idMovie) {
       dispatch({ type: "lessLike", idMovie: idMovie });
     },
-    filterCatego: function (catego, arrayMovies) {
-      dispatch({ type: "filterCatego", catego: catego, arrayMovies: arrayMovies });
+    filterCatego: function (catego, arrayMovies, counterFilter) {
+      dispatch({ type: "filterCatego", catego: catego, arrayMovies: arrayMovies, counterFilter: counterFilter });
     }
   };
 }
