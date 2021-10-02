@@ -40,7 +40,7 @@ function Home({movies, category, ...props}) {
 
   const handleClickDelete = (idMovie) => {
     props.deleteMovie(idMovie);
-    setBool(true);
+    setBool(!bool);
   }
 
   const handleClickMoreLike = (idMovie) => {
