@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { movies$ } from '../lib/movies';
 import { connect } from "react-redux";
 import Movie from './Movie';
+import Categories from './Categories';
 
 function Home(props) {
 
@@ -44,11 +45,6 @@ function Home(props) {
     loadData()
   }, [counterFilter]);
 
-  const onChangeSelect = (catego) => {
-    setCounterFilter(counterFilter+1);
-    setStateCatego(catego);
-  }
-
   const tabMovies = props.movies.map((movie) => {
     return (
       <Movie 
@@ -66,14 +62,14 @@ function Home(props) {
     )
   });
 
-  const displayOptionCategory = props.categoryReduc.map((category, i) => <option key={i} value={category}>{category}</option>);
-
   return (
     <div className="containerFull">
-      <select name="selectCatego" className="selectCatego" onChange={ (e) => onChangeSelect(e.target.value) }>
-        <option value="Category">Filtrer par catégories</option>
-        {displayOptionCategory}
-      </select>
+      <Categories
+        counterFilter={counterFilter}
+        setCounterFilter={setCounterFilter}
+        stateCatego={stateCatego}
+        setStateCatego={setStateCatego}
+      />
       <div className="container">
           {tabMovies}
       </div>
