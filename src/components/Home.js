@@ -8,8 +8,6 @@ function Home(props) {
 
   const [bool, setBool] = useState(false);
   const [counterFilter, setCounterFilter] = useState(0);
-  const [moviesCopy, setMoviesCopy] = useState([]);
-  const [stateCatego, setStateCatego] = useState('');
 
   useEffect(() => {
     // chargement du tableau à l'initialisation
@@ -35,16 +33,6 @@ function Home(props) {
     loadData()
   }, [bool]);
 
-  useEffect(() => {
-    async function loadData() {
-      if(counterFilter === 1) {
-        setMoviesCopy(props.movies);
-      }
-      props.filterCatego(stateCatego, moviesCopy, counterFilter);
-    };
-    loadData()
-  }, [counterFilter]);
-
   const tabMovies = props.movies.map((movie) => {
     return (
       <Movie 
@@ -67,11 +55,9 @@ function Home(props) {
       <Categories
         counterFilter={counterFilter}
         setCounterFilter={setCounterFilter}
-        stateCatego={stateCatego}
-        setStateCatego={setStateCatego}
       />
       <div className="container">
-          {tabMovies}
+        {tabMovies}
       </div>
     </div>
   );
@@ -88,9 +74,6 @@ function mapDispatchToProps(dispatch) {
     },
     addCategory: function (category) {
       dispatch({ type: "addCategory", categoryReduc: category });
-    },
-    filterCatego: function (catego, arrayMovies, counterFilter) {
-      dispatch({ type: "filterCatego", catego: catego, arrayMovies: arrayMovies, counterFilter: counterFilter });
     }
   };
 }

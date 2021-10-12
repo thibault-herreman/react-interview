@@ -20,10 +20,11 @@ export default function(movies = [], action) {
         if (action.counterFilter > 1) {
             movies = action.arrayMovies;
         }
-        if (action.catego === 'Category') {
+        if (action.catego.length === 0) {
             return movies;
         } else {
-            const moviesCopy = movies.filter(movie => movie.category === action.catego);
+            const catFilter = action.catego.map(cat => cat.value);
+            const moviesCopy = movies.filter(movie => catFilter.includes(movie.category));
             return moviesCopy;
         }
     } else {

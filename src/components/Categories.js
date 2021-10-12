@@ -1,19 +1,38 @@
+import { useEffect, useState } from 'react';
 import { connect } from "react-redux";
+import Select from 'react-select';
 
 function Categories(props) {
 
-    const displayOptionCategory = props.categoryReduc.map((category, i) => <option key={i} value={category}>{category}</option>);
+    const [moviesCopy, setMoviesCopy] = useState([]);
+    const [stateCatego, setStateCatego] = useState([]);
 
-    const onChangeSelect = (catego) => {
+    useEffect(() => {
+        async function loadData() {
+          if(props.counterFilter === 1) {
+            setMoviesCopy(props.movies);
+          }
+          props.filterCatego(stateCatego, moviesCopy, props.counterFilter);
+        };
+        loadData()
+    }, [props.counterFilter]);
+
+    const options = props.categoryReduc.map(category => {
+        return { value: category, label: category }
+    });
+
+    const onChangeSelect = (selectedOption) => {
         props.setCounterFilter(props.counterFilter+1);
-        props.setStateCatego(catego);
+        setStateCatego(selectedOption);
     }
 
     return (
-        <select name="selectCatego" className="selectCatego" onChange={ (e) => onChangeSelect(e.target.value) }>
-            <option value="Category">Filtrer par catégories</option>
-            {displayOptionCategory}
-        </select>
+        <Select 
+            options={options}
+            isMulti
+            className='selectCatego'
+            onChange={onChangeSelect}
+        />
     );
 }
 
