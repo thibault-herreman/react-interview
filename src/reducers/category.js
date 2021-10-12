@@ -1,7 +1,7 @@
-export default function(category = [], action) {
+export default function(categoryReduc = [], action) {
     if (action.type === 'addCategory') {
-        return action.category;
+        return action.categoryReduc;
     } else {
-        return category;
+        return categoryReduc;
     }
 }

@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react';
 import { movies$ } from '../lib/movies';
 import { connect } from "react-redux";
-import { 
-  CloseOutlined,
-  LikeOutlined,
-  DislikeOutlined
-} from '@ant-design/icons';
+import Movie from './Movie';
 
-function Home({movies, category, ...props}) {
+function Home(props) {
 
   const [bool, setBool] = useState(false);
   const [counterFilter, setCounterFilter] = useState(0);
@@ -31,7 +27,7 @@ function Home({movies, category, ...props}) {
 
   useEffect(() => {
     async function loadData() {
-      const optionCategory = movies.map((movie) => movie.category);
+      const optionCategory = props.movies.map((movie) => movie.category);
       const filteredArray = optionCategory.filter((el, pos) => optionCategory.indexOf(el) === pos);
       props.addCategory(filteredArray);
     };
@@ -41,47 +37,36 @@ function Home({movies, category, ...props}) {
   useEffect(() => {
     async function loadData() {
       if(counterFilter === 1) {
-        setMoviesCopy(movies);
+        setMoviesCopy(props.movies);
       }
       props.filterCatego(stateCatego, moviesCopy, counterFilter);
     };
     loadData()
   }, [counterFilter]);
 
-  const handleClickDelete = (idMovie) => {
-    props.deleteMovie(idMovie);
-    setBool(!bool);
-    setCounterFilter(0);
-  }
-
-  const handleClickMoreLike = (idMovie) => {
-    props.moreLike(idMovie);
-  }
-
-  const handleClickLessLike = (idMovie) => {
-    props.lessLike(idMovie);
-  }
-
   const onChangeSelect = (catego) => {
     setCounterFilter(counterFilter+1);
     setStateCatego(catego);
   }
 
-  const tabMovies = movies.map((movie) => {
+  const tabMovies = props.movies.map((movie) => {
     return (
-      <div key={movie.id} className="movie">
-        <p className="movie__title">{movie.title}</p>
-        <p>{movie.category}</p>
-        <div className="is-flex">
-          <button type='button' onClick={() => handleClickMoreLike(movie.id)} className="button"><LikeOutlined /> {movie.likes}</button>
-          <button type='button' onClick={() => handleClickLessLike(movie.id)} className="button is-ml15"><DislikeOutlined /> {movie.dislikes}</button>
-        </div>
-        <CloseOutlined className="crossClose" onClick={() => handleClickDelete(movie.id, movie.category)} />
-      </div>
+      <Movie 
+        key={movie.id}
+        bool={bool}
+        setBool={setBool}
+        counterFilter={counterFilter}
+        setCounterFilter={setCounterFilter}
+        id={movie.id}
+        title={movie.title}
+        category={movie.category}
+        likes={movie.likes}
+        dislikes={movie.dislikes}
+      />
     )
   });
 
-  const displayOptionCategory = category.map((category, i) => <option key={i} value={category}>{category}</option>);
+  const displayOptionCategory = props.categoryReduc.map((category, i) => <option key={i} value={category}>{category}</option>);
 
   return (
     <div className="containerFull">
@@ -97,7 +82,7 @@ function Home({movies, category, ...props}) {
 }
 
 function mapStateToProps(state) {
-  return { movies: state.movies, category: state.category}
+  return { movies: state.movies, categoryReduc: state.categoryReduc}
 }
 
 function mapDispatchToProps(dispatch) {
@@ -106,16 +91,7 @@ function mapDispatchToProps(dispatch) {
       dispatch({ type: "addMovies", movies: movies });
     },
     addCategory: function (category) {
-      dispatch({ type: "addCategory", category: category });
-    },
-    deleteMovie: function (idMovie) {
-      dispatch({ type: "deleteMovie", idMovie: idMovie });
-    },
-    moreLike: function (idMovie) {
-      dispatch({ type: "moreLike", idMovie: idMovie });
-    },
-    lessLike: function (idMovie) {
-      dispatch({ type: "lessLike", idMovie: idMovie });
+      dispatch({ type: "addCategory", categoryReduc: category });
     },
     filterCatego: function (catego, arrayMovies, counterFilter) {
       dispatch({ type: "filterCatego", catego: catego, arrayMovies: arrayMovies, counterFilter: counterFilter });
