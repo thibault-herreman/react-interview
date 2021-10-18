@@ -12,14 +12,13 @@ function Home(props) {
   useEffect(() => {
     // chargement du tableau à l'initialisation
     async function loadData() {
-      const promise = movies$;
-      promise.then(moviesLb => {
-        props.addMovies(moviesLb);
+      const promiseFct = () => movies$;
+      const moviesLb = await promiseFct();
+      props.addMovies(moviesLb);
 
-        const optionCategory = moviesLb.map((movie) => movie.category);
-        const filteredArray = optionCategory.filter((el, pos) => optionCategory.indexOf(el) === pos);
-        props.addCategory(filteredArray);
-      });
+      const optionCategory = moviesLb.map((movie) => movie.category);
+      const filteredArray = optionCategory.filter((el, pos) => optionCategory.indexOf(el) === pos);
+      props.addCategory(filteredArray);
     };
     loadData()
   }, []);
